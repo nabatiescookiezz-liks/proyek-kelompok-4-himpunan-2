@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Himpunan dan Prinsip Inklusi-Eksklusi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #071335;
+        }
+        h1, h2 {
+            color: #ffffff;
+        }
+        .section {
+            background-color: rgb(255, 135, 171);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+        }
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+            white-space: pre-line;
+        }
+        .tab {
+            display: none;
+        }
+        .tab.active {
+            display: block;
+        }
+        .tab-buttons {
+            margin-bottom: 10px;
+        }
+        .tab-buttons button {
+            background-color: #ddd;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .tab-buttons button.active {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator Himpunan dan Prinsip Inklusi-Eksklusi</h1>
+
+    <div class="section">
+        <h2>Prinsip Inklusi-Eksklusi</h2>
+        <p>Prinsip inklusi-eksklusi adalah aturan matematika yang digunakan untuk menghitung ukuran gabungan dari beberapa himpunan dengan menghindari penghitungan ganda elemen yang berada di lebih dari satu himpunan.</p>
+        <p><strong>Untuk dua himpunan:</strong> |A ∪ B| = |A| + |B| - |A ∩ B|</p>
+        <p>Ini berarti jumlah elemen dalam gabungan A dan B adalah jumlah elemen di A ditambah jumlah di B, dikurangi jumlah elemen yang ada di keduanya.</p>
+    </div>
+
+    <div class="section">
+        <h2>Perluasan untuk Tiga Himpunan</h2>
+        <p>Untuk tiga himpunan, prinsip ini diperluas sebagai berikut:</p>
+        <p><strong>|A ∪ B ∪ C| = |A| + |B| + |C| - |A ∩ B| - |A ∩ C| - |B ∩ C| + |A ∩ B ∩ C|</strong></p>
+        <p>Penjelasan: Kita menambah ukuran masing-masing himpunan, mengurangi irisan berpasangan (karena elemen di irisan berpasangan dihitung dua kali), dan menambah kembali irisan ketiga (karena dikurangi tiga kali sebelumnya).</p>
+        <p>Contoh: Jika |A| = 10, |B| = 15, |C| = 20, |A ∩ B| = 5, |A ∩ C| = 7, |B ∩ C| = 8, |A ∩ B ∩ C| = 3, maka |A ∪ B ∪ C| = 10 + 15 + 20 - 5 - 7 - 8 + 3 = 28.</p>
+    </div>
+
+    <div class="section">
+        <div class="tab-buttons">
+            <button onclick="showTab('elements')">Berdasarkan Elemen</button>
+            <button onclick="showTab('sizes')">Berdasarkan Ukuran</button>
+        </div>
+        
+        <div id="elements" class="tab active">
+            <h2>Kalkulator Berdasarkan Elemen Himpunan</h2>
+            <p>Masukkan elemen himpunan (pisahkan dengan koma, tanpa spasi):</p>
+            <label for="setA">Himpunan A:</label>
+            <input type="text" id="setA" placeholder="contoh: 1,2,3,4"><br>
+            <label for="setB">Himpunan B:</label>
+            <input type="text" id="setB" placeholder="contoh: 3,4,5,6"><br>
+            <label for="setC">Himpunan C (opsional untuk tiga himpunan):</label>
+            <input type="text" id="setC" placeholder="contoh: 5,6,7,8"><br>
+            <button onclick="calculateUnion()">Hitung Gabungan (Union)</button>
+            <button onclick="calculateIntersection()">Hitung Irisan (Intersection)</button>
+            <button onclick="calculateInclusionExclusion()">Hitung dengan Prinsip Inklusi-Eksklusi</button>
+        </div>
+        
+        <div id="sizes" class="tab">
+            <h2>Kalkulator Berdasarkan Ukuran Himpunan</h2>
+            <p>Masukkan ukuran himpunan dan irisan (gunakan angka). Jika irisan tidak diketahui, masukkan 0 atau nilai yang diketahui dari soal. Untuk dua himpunan saja, biarkan |C| dan irisan terkait C kosong (0).</p>
+            <label for="sizeA">|A|:</label>
+            <input type="number" id="sizeA" placeholder="65"><br>
+            <label for="sizeB">|B|:</label>
+            <input type="number" id="sizeB" placeholder="45"><br>
+            <label for="sizeC">|C| (opsional):</label>
+            <input type="number" id="sizeC" placeholder="42"><br>
+            <label for="interAB">|A ∩ B|:</label>
+            <input type="number" id="interAB" placeholder="0"><br>
+            <label for="interAC">|A ∩ C| (opsional):</label>
+            <input type="number" id="interAC" placeholder="0"><br>
+            <label for="interBC">|B ∩ C| (opsional):</label>
+            <input type="number" id="interBC" placeholder="0"><br>
+            <label for="interABC">|A ∩ B ∩ C| (opsional):</label>
+            <input type="number" id="interABC" placeholder="0"><br>
+            <button onclick="calculateUnionOnly()">Hitung |A ∪ B ∪ C| Saja</button>
+            <button onclick="calculateIntersectionOnly()">Hitung |A ∩ B ∩ C| Saja</button>
+            <button onclick="calculateSizes()">Hitung Gabungan dan Irisan dengan Langkah-Langkah</button>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            const buttons = document.querySelectorAll('.tab-buttons button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function getSet(inputId) {
+            const input = document.getElementById(inputId).value;
+            return new Set(input.split(',').map(item => item.trim()).filter(item => item !== ''));
+        }
+
+        function calculateUnion() {
+            const setA = getSet('setA');
+            const setB = getSet('setB');
+            const setC = getSet('setC');
+            const unionAB = new Set([...setA, ...setB]);
+            const unionABC = new Set([...unionAB, ...setC]);
+            document.getElementById('result').innerText = `Gabungan: {${Array.from(unionABC).join(', ')}} (Ukuran: ${unionABC.size})`;
+        }
+
+        function calculateIntersection() {
+            const setA = getSet('setA');
+            const setB = getSet('setB');
+            const setC = getSet('setC');
+            const interAB = new Set([...setA].filter(x => setB.has(x)));
+            const interABC = new Set([...interAB].filter(x => setC.has(x)));
+            document.getElementById('result').innerText = `Irisan: {${Array.from(interABC).join(', ')}} (Ukuran: ${interABC.size})`;
+        }
+
+        function calculateInclusionExclusion() {
+            const setA = getSet('setA');
+            const setB = getSet('setB');
+            const setC = getSet('setC');
+            const sizeA = setA.size;
+            const sizeB = setB.size;
+            const sizeC = setC.size;
+            const interAB = new Set([...setA].filter(x => setB.has(x))).size;
+            const interAC = new Set([...setA].filter(x => setC.has(x))).size;
+            const interBC = new Set([...setB].filter(x => setC.has(x))).size;
+            const interABC = new Set([...setA].filter(x => setB.has(x) && setC.has(x))).size;
+            const unionSize = sizeA + sizeB + sizeC - interAB - interAC - interBC + interABC;
+            document.getElementById('result').innerText = `Ukuran gabungan (Inklusi-Eksklusi): ${unionSize}`;
+        }
+
+        function calculateUnionOnly() {
+            const sizeA = parseInt(document.getElementById('sizeA').value) || 0;
+            const sizeB = parseInt(document.getElementById('sizeB').value) || 0;
+            const sizeC = parseInt(document.getElementById('sizeC').value) || 0;
+            const interAB = parseInt(document.getElementById('interAB').value) || 0;
+            const interAC = parseInt(document.getElementById('interAC').value) || 0;
+            const interBC = parseInt(document.getElementById('interBC').value) || 0;
+            const interABC = parseInt(document.getElementById('interABC').value) || 0;
+
+            if (sizeC === 0) {
+                const unionAB = sizeA + sizeB - interAB;
+                document.getElementById('result').innerText = `|A ∪ B| = ${sizeA} + ${sizeB} - ${interAB} = ${unionAB}`;
+            } else {
+                const unionABC = sizeA + sizeB + sizeC - interAB - interAC - interBC + interABC;
+                document.getElementById('result').innerText = `|A ∪ B ∪ C| = ${sizeA} + ${sizeB} + ${sizeC} - ${interAB} - ${interAC} - ${interBC} + ${interABC} = ${unionABC}`;
+            }
+        }
+
+        function calculateIntersectionOnly() {
+            const interABC = parseInt(document.getElementById('interABC').value) || 0;
+            document.getElementById('result').innerText = `|A ∩ B ∩ C| = ${interABC}`;
+        }
+
+        function calculateSizes() {
+            const sizeA = parseInt(document.getElementById('sizeA').value) || 0;
+            const sizeB = parseInt(document.getElementById('sizeB').value) || 0;
+            const sizeC = parseInt(document.getElementById('sizeC').value) || 0;
+            const interAB = parseInt(document.getElementById('interAB').value) || 0;
+            const interAC = parseInt(document.getElementById('interAC').value) || 0;
+            const interBC = parseInt(document.getElementById('interBC').value) || 0;
+            const interABC = parseInt(document.getElementById('interABC').value) || 0;
+
+            let steps = "";
+
+            if (sizeC === 0) {
+                // Hanya dua himpunan
+                const unionAB = sizeA + sizeB - interAB;
+                steps += "Perhitungan untuk Dua Himpunan:\n\n";
+                steps += `Rumus: |A ∪ B| = |A| + |B| - |A ∩ B|\n`;
+                steps += `Langkah: ${sizeA} + ${sizeB} - ${interAB} = ${unionAB}\n\n`;
+                steps += `Jadi, |A ∪ B| = ${unionAB}\n`;
+                steps += `|A ∩ B| = ${interAB}\n`;
+            } else {
+                // Tiga himpunan
+                const unionAB = sizeA + sizeB - interAB;
+                const unionAC = sizeA + sizeC - interAC;
+                const unionBC = sizeB + sizeC - interBC;
+                const unionABC = sizeA + sizeB + sizeC - interAB - interAC - interBC + interABC;
+
+                steps += "Langkah-langkah perhitungan |A ∪ B ∪ C| menggunakan Prinsip Inklusi-Eksklusi:\n\n";
+                steps += `Langkah 1: Tambahkan ukuran masing-masing himpunan\n`;
+                steps += `|A| + |B| + |C| = ${sizeA} + ${sizeB} + ${sizeC} = ${sizeA + sizeB + sizeC}\n\n`;
+                steps += `Langkah 2: Kurangi irisan berpasangan\n`;
+                steps += `Hasil langkah 1 - |A ∩ B| - |A ∩ C| - |B ∩ C| = ${sizeA + sizeB + sizeC} - ${interAB} - ${interAC} - ${interBC} = ${(sizeA + sizeB + sizeC) - interAB - interAC - interBC}\n\n`;
+                steps += `Langkah 3: Tambahkan irisan ketiga\n`;
+                steps += `Hasil langkah 2 + |A ∩ B ∩ C| = ${(sizeA + sizeB + sizeC) - interAB - interAC - interBC} + ${interABC} = ${(sizeA + sizeB + sizeC) - interAB - interAC - interBC + interABC}\n\n`;
+                steps += `Jadi, |A ∪ B ∪ C| = ${(sizeA + sizeB + sizeC) - interAB - interAC - interBC + interABC}\n\n`;
+
+                steps += `Langkah-langkah untuk |A ∪ B|:\n`;
+                steps += `|A ∪ B| = |A| + |B| - |A ∩ B| = ${sizeA} + ${sizeB} - ${interAB} = ${unionAB}\n\n`;
+
+                steps += `Langkah-langkah untuk |A ∪ C|:\n`;
+                steps += `|A ∪ C| = |A| + |C| - |A ∩ C| = ${sizeA} + ${sizeC} - ${interAC} = ${unionAC}\n\n`;
+
+                steps += `Langkah-langkah untuk |B ∪ C|:\n`;
+                steps += `|B ∪ C| = |B| + |C| - |B ∩ C| = ${sizeB} + ${sizeC} - ${interBC} = ${unionBC}\n\n`;
+
+                steps += `Irisan yang diberikan:\n`;
+                steps += `|A ∩ B| = ${interAB}\n`;
+                steps += `|A ∩ C| = ${interAC}\n`;
+                steps += `|B ∩ C| = ${interBC}\n`;
+                steps += `|A ∩ B ∩ C| = ${interABC}\n`;
+            }
+
+            document.getElementById('result').innerText = steps;
+        }
+    </script>
+</body>
+</html>
